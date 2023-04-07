@@ -1,46 +1,42 @@
 // Given an array of strings strs, group the anagrams together. You can return the answer in any order.
 
 // An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+#include<vector>
 
-#include <iostream>
-
-
-#include <string.h>
-#include <vector>
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        vector<pair <string,int> >dupArray;
-        
-        //create a duplicate array that will hold pairs
-        //it will be the string and t he corresponding index
-        for (int i = 0; i < strs.size(); i++) {
-            dupArray.push_back(make_pair(strs.at(i), i));
-            // pair.first contains the input words and
-            // pair.second contains its index
-        }
-
-        //sort each individual string by its letters
-        for (int j = 0; j < strs.size(); ++j) {
-            sort(dupArray[j].first.begin(),dupArray[j].first.end());
-        }
-        //now that each string is sorted the whole vector must be sorted
-        //this will put strings that are the same right next to each other
-        sort(dupArray.begin(), dupArray.end());
-
-        std::vector<vector<string>> returnVector;
-        std::vector<string> smallerVectors;
-        smallerVectors.push_back(strs.at(dupArray.at(0).second));
-        returnVector.push_back(smallerVectors);
-        for (int k = 1; k < strs.size(); ++k){
-            if(std::strcmp(dupArray.at(k).first.c_str(),dupArray.at(k-1).first.c_str()) == 0){
-                smallerVectors.push_back(strs.at(dupArray.at(k).second));
-                //lost on the final portion of how to solve the addition of all the vectors back on
+        //create a map with the string as one parameter and the vector as another
+        //result will be placed into...result  
+        map<string,vector<string>>mp;
+        vector<vector<string>> result;
+        int slength;
+        int n = strs.size();
+        for(int i=0;i < n ; i++){
+            //creates a vector of size 26 and each element is zero
+            //in for loop so it gets wiped each time
+            vector<int>v(26,0);
+            slength = strs[i].length();
+            for(int j=0; j < slength; j++){
+                //adds up the frequency of in the vector
+                v[strs[i][j]-'a']++;
             }
-            else{
-                returnVector.push_back(smallerVectors);
-                smallerVectors.clear();
-            }
+            string s = "";    
+            for(int j=0; j < 26; j++){
+                //enters all the frequency of each letter to the string
+                //#010304...etc
+
+                s.append("#");
+                s.append(to_string(v[j]));
+            } 
+            //at the location of the string #152 etc it will place the original string
+            //will create a vector of each identical string this way
+            mp[s].push_back(strs[i]);
         }
+        for(auto i = mp.begin(); i != mp.end(); i++){
+            //will allow it to push all the seconds onto the vector
+            result.push_back(i->second);
+        }
+        return result;
     }
 };
