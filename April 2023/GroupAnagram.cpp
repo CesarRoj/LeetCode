@@ -5,6 +5,8 @@
 #include <iostream>
 
 
+#include <string.h>
+#include <vector>
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
@@ -19,21 +21,25 @@ public:
         }
 
         //sort each individual string by its letters
-        for (int j = 0; j < size; ++j) {
+        for (int j = 0; j < strs.size(); ++j) {
             sort(dupArray[j].first.begin(),dupArray[j].first.end());
         }
         //now that each string is sorted the whole vector must be sorted
         //this will put strings that are the same right next to each other
         sort(dupArray.begin(), dupArray.end());
 
-        vector<vector<string>> returnVector;
-        vector<string> smallerVectors;
+        std::vector<vector<string>> returnVector;
+        std::vector<string> smallerVectors;
         smallerVectors.push_back(strs.at(dupArray.at(0).second));
         returnVector.push_back(smallerVectors);
         for (int k = 1; k < strs.size(); ++k){
-            if(strcmp(dupArray.at(k).first,duArray.at(k-1).first)){
-                returnVector.push_back()
+            if(std::strcmp(dupArray.at(k).first.c_str(),dupArray.at(k-1).first.c_str()) == 0){
+                smallerVectors.push_back(strs.at(dupArray.at(k).second));
                 //lost on the final portion of how to solve the addition of all the vectors back on
+            }
+            else{
+                returnVector.push_back(smallerVectors);
+                smallerVectors.clear();
             }
         }
     }
